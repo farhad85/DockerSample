@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-
 namespace DockerSample
 {
     public class Program
@@ -15,12 +14,15 @@ namespace DockerSample
         {
             CreateHostBuilder(args).Build().Run();
         }
-
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseStartup<Startup>();
+                    var port = Environment.GetEnvironmentVariable("PORT");
+                    
+                    webBuilder
+                        .UseStartup<Startup>()
+                        .UseUrls("http://*:" + port);
                 });
     }
 }
