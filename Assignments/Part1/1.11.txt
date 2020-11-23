@@ -1,0 +1,12 @@
+FROM node:10.20-alpine
+WORKDIR /app
+COPY ./ /app
+
+RUN npm install
+
+EXPOSE 8000
+CMD npm start
+
+------------------------------
+touch logs.txt
+docker run -p 8000:8000 -d -v $(pwd)/logs.txt:/app/logs.txt {id}

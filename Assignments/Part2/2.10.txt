@@ -1,0 +1,97 @@
+docker-compose:
+
+version: '3.5'
+
+services:
+    proxy: 
+      image: nginx:latest
+      volumes: 
+        - /var/run/docker.sock:/tmp/docker.sock:ro 
+        - ./nginx.conf:/etc/nginx/nginx.conf
+      ports: 
+        - 80:80 
+      depends_on: 
+        - back
+        - front     
+        
+    redis:
+      image: redis:latest
+      ports:
+       - 6379:6379
+       
+    postgress:
+      image: postgres:latest
+      environment:
+       - POSTGRES_PASSWORD=S@cr@tP@ss30rd
+       - POSTGRES_USER=postgress
+       - POSTGRES_DB=postgress
+    
+    back:
+      build: ./backend-example-docker
+      ports:
+       - 8000:8000
+      environment:
+       - FRONT_URL=http://localhost:5000
+       - REDIS=redis
+       - DB_NAME=
+       - DB_PASSWORD=S@cr@tP@ss30rd
+       - DB_USERNAME=postgress
+       - DB_HOST=postgress       
+      depends_on: 
+       - redis
+       - postgress       
+     
+    front:
+      build: ./frontend-example-docker
+      ports:
+       - 5000:5000
+      environment:
+       - API_URL=http://127.0.0.1/api
+
+
+-----------------------------------------------
+front dockerfile:
+
+FROM node:10.20-alpine
+WORKDIR /app
+COPY ./ /app
+
+RUN npm install
+RUN npm run build
+
+RUN npm install -g serve
+
+EXPOSE 5000
+CMD serve -s -l 5000 dist
+
+----------------------------------------------
+back dockerfile:
+
+FROM node:10.20-alpine
+WORKDIR /app
+COPY ./ /app
+
+
+RUN npm install
+
+EXPOSE 8000
+CMD npm start
+
+----------------------------------------------
+nginx.conf
+
+events { worker_connections 1024; }
+
+  http {
+    server {
+      listen 80;
+
+      location / {
+        proxy_pass http://front:5000;
+      }
+
+      location /api/ {
+        proxy_pass http://back:8000/;
+      }
+    }
+  }

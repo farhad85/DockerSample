@@ -1,0 +1,9 @@
+> docker ps
+> docker exec {containerId} bash
+# tail -f ./logs.txt
+Tue, 29 Sep 2020 12:51:01 GMT
+Tue, 29 Sep 2020 12:51:04 GMT
+Tue, 29 Sep 2020 12:51:07 GMT
+Tue, 29 Sep 2020 12:51:10 GMT
+Secret message is:
+"Docker is easy"

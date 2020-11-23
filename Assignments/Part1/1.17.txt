@@ -1,0 +1,14 @@
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1
+
+RUN dotnet tool install --global dotnet-ef --version 3.1.6
+RUN dotnet tool install dotnet-azure --global
+
+CMD tail -f /dev/null
+-----------------
+
+It is a docker image that continues .NET Core SDK version 3.1 to build and run C#/F#/VB.Net apps, it also includes some tools like entity framework and azure.
+the CMD keeps the container running.
+
+-----------------
+
+https://hub.docker.com/r/farhade/dev-env

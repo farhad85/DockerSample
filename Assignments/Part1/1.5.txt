@@ -1,0 +1,5 @@
+sudo docker run --rm -it ubuntu:16.04 sh -c 'echo "Input website:"; read website; echo "Searching.."; apt-get update; apt-get install curl -y; sleep 1; curl http://$website;'
+
+--- SMART WAY
+
+sudo docker run --rm -e website=helsinki.fi ubuntu:16.04 sh -c 'apt-get update; apt-get install curl -y; sleep 1; curl http://$website;'

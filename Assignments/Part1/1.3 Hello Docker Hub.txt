@@ -1,0 +1,8 @@
+> docker run -it devopsdockeruh/pull_exercise sh
+/usr/app # ls
+Dockerfile  README.md   index.js
+/usr/app # cat index.js
+
+-------------
+
+"This is the secret message"

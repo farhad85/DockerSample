@@ -1,0 +1,27 @@
+Size 1:
+
+REPOSITORY                           TAG                 IMAGE ID            CREATED             SIZE
+front                                latest              c0c863dc7a7f        14 hours ago        337MB
+back                                 latest              7fe89cbc569f        14 hours ago        102MB
+
+---------------------------
+
+As I use node:10.20-alpine for base image. the sizes are iffrent with excersice
+
+---------------------------
+front docker file:
+
+FROM node:10.20-alpine
+WORKDIR /app
+COPY ./ /app
+
+RUN npm install && npm run build && npm install -g serve && rm -r node_modules
+
+EXPOSE 5000
+CMD serve -s -l 5000 dist
+
+---------------------------
+
+REPOSITORY                            TAG                 IMAGE ID            CREATED             SIZE
+front                                 latest              51dadacb2b77        2 minutes ago       146MB
+back                                  latest              17eca1ee8ea9        3 minutes ago       102MB

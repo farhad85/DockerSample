@@ -1,0 +1,37 @@
+front dockerfile:
+
+FROM node:10.20-alpine
+WORKDIR /app
+COPY ./ /app
+
+ENV API_URL=http://127.0.0.1:8000
+
+RUN npm install
+RUN npm run build
+
+RUN npm install -g serve
+
+EXPOSE 5000
+CMD serve -s -l 5000 dist
+
+----------------------------
+front backfile:
+
+FROM node:10.20-alpine
+WORKDIR /app
+COPY ./ /app
+
+ENV FRONT_URL=http://localhost:5000
+
+RUN npm install
+
+EXPOSE 8000
+CMD npm start
+----------------------------
+Run command:
+
+docker run -p 5000:5000 -d --name front {id}
+docker run -p 8000:8000 -d --name back {id}
+-----------------------
+
+To use this outside of local we need use machine ip for API_URL or other docker solutions

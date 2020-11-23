@@ -1,0 +1,21 @@
+docker-compose.yml:
+
+version: '3.5'
+
+services:
+    first_volume_exercise:
+      image: devopsdockeruh/first_volume_exercise
+      volumes:
+        - ./log.txt:/usr/app/logs.txt       
+
+-----------------------------
+command:
+
+touch ./log.txt
+docker-compose up
+
+
+------------------------------
+
+Secret message is:
+"Volume bind mount is easy"

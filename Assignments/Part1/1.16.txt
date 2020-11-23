@@ -1,0 +1,11 @@
+docker pull devopsdockeruh/heroku-example
+
+heroku login
+heroku container:login
+docker tag devopsdockeruh/heroku-example registry.heroku.com/farhad-heroku-example/web
+docker push registry.heroku.com/farhad-heroku-example/web
+heroku container:release --app farhad-heroku-example web
+
+----------------------
+
+https://farhad-heroku-example.herokuapp.com/

@@ -1,0 +1,67 @@
+DockerSample project before:
+
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1
+
+WORKDIR /app
+COPY . ./
+
+WORKDIR /app/
+RUN dotnet restore
+RUN dotnet publish -c Release -o out
+
+EXPOSE 5000
+
+ENTRYPOINT dotnet out/DockerSample.dll
+
+------
+after:
+
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build-env
+
+WORKDIR /app
+COPY . ./
+
+WORKDIR /app/
+RUN dotnet restore
+RUN dotnet publish -c Release -o out
+
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
+
+WORKDIR /app
+COPY --from=build-env /app/out .
+
+EXPOSE 5000
+
+ENTRYPOINT dotnet out/DockerSample.dll
+
+----------------------------------------------------------------------------
+----------------------------------------------------------------------------
+
+ex 3.3 before:
+
+FROM alpine
+
+WORKDIR /app
+COPY . ./
+
+RUN apk update && apk add git && apk add docker
+
+CMD /bin/sh main.sh
+
+------
+after:
+
+FROM alpine
+
+WORKDIR /app
+COPY . ./
+
+RUN apk update && apk add git && apk add docker
+
+# alpine guest user
+USER 405
+
+CMD /bin/sh main.sh
+
+----------------------------------------------------------------------------
+----------------------------------------------------------------------------

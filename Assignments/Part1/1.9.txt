@@ -1,0 +1,4 @@
+docker run -d -p 8888:80 devopsdockeruh/ports_exercise
+
+--------------------- contetn-----------------------
+Ports configured correctly!!

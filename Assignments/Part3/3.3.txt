@@ -1,0 +1,50 @@
+main.sh:
+
+#!/bin/bash
+
+echo "Clone $GIT_URL"
+git clone $GIT_URL repo
+cd repo
+
+echo "Build docker image"
+docker build .
+
+id=$(docker images | awk '{print $3}' | awk 'NR==2')
+echo "image id is $id"
+
+echo "Tag image with $TAG"
+docker tag $id $TAG
+
+docker login -u $REGISTRY_USER -p $REGISTRY_PASSWORD
+
+echo "Push image"
+docker push $TAG
+
+
+------------------------------
+dockerfile:
+
+FROM alpine
+
+WORKDIR /app
+COPY . ./
+
+RUN apk update && apk add git && apk add docker
+
+CMD /bin/sh main.sh
+
+------------------------------
+docker-compose.yml:
+
+version: '3.5'
+
+services:
+    app: 
+      build: .
+      environment:
+       - GIT_URL=https://github.com/x
+       - TAG=user/image
+       - REGISTRY_PASSWORD=password
+       - REGISTRY_USER=user
+      volumes: 
+        - /var/run/docker.sock:/var/run/docker.sock     

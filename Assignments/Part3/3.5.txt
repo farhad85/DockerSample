@@ -1,0 +1,7 @@
+REPOSITORY                            TAG                 IMAGE ID            CREATED             SIZE
+front                                 latest              fd4db1758652        6 minutes ago       147MB
+back                                  latest              0ec24d41e5d3        9 minutes ago       102MB
+
+----------------------------------------------
+
+I already used node:10.20-alpine base image so the size is quite small

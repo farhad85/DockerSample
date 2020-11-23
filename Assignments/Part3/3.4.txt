@@ -1,0 +1,28 @@
+fron dockerfile:
+
+FROM node:10.20-alpine
+WORKDIR /app
+COPY ./ /app
+
+RUN npm install && npm run build && npm install -g serve && rm -r node_modules
+
+# alpine guest user instead of adduser -D app
+USER 405
+
+EXPOSE 5000
+CMD serve -s -l 5000 dist
+
+-------------------------------------------
+back dockerfile:
+
+FROM node:10.20-alpine
+WORKDIR /app
+COPY ./ /app
+
+RUN npm install
+
+# alpine guest user instead of adduser -D app
+USER 405
+
+EXPOSE 8000
+CMD npm start
